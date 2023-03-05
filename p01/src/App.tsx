@@ -38,10 +38,6 @@ const posts = [
   },
 ];
 
-const comments = [
-
-]
-
 function App() {
   const [count, setCount] = useState(0)
 
