@@ -13,7 +13,7 @@ Collection of annotations, challenges and several content of Ignite's ReactJS 20
 ### Project 01
 
 - [Blog Feed - The first project](https://github.com/debfdias/ignite-reactjs-22/tree/master/p01)
-- [Main challenge - Hands on!](https://github.com/debfdias/ignite-reactjs-22/tree/master/challenge01)
+- [Main challenge - Hands on!](https://github.com/debfdias/ToDoListVite)
 
 ### Project 02
 
