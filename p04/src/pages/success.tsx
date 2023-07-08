@@ -5,6 +5,7 @@ import {
   SuccessContainer
 } from "@/styles/pages/success"
 import { GetServerSideProps } from "next"
+import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 import Stripe from "stripe"
@@ -23,24 +24,32 @@ export default function Success({
   productsImages
 }: SuccessProps) {
   return (
-    <SuccessContainer>
-      <ImagesContainer>
-        {productsImages.map((image, i) => (
-          <ImageContainer key={i}>
-            <Image src={image} width={120} height={110} alt="" />
-          </ImageContainer>
-        ))}
-      </ImagesContainer>
+    <>
+      <Head>
+        <title>Order placed | Ignite Shop</title>
 
-      <h1>Order succesfully placed!</h1>
+        <meta name="robots" content="noindex"></meta>
+      </Head>
 
-      <p>
-        Yay <strong>{customerName}</strong>, your order of{" "}
-        {productsImages.length} awesome shirts is on the way to your home.
-      </p>
+      <SuccessContainer>
+        <ImagesContainer>
+          {productsImages.map((image, i) => (
+            <ImageContainer key={i}>
+              <Image src={image} width={120} height={110} alt="" />
+            </ImageContainer>
+          ))}
+        </ImagesContainer>
 
-      <Link href="/">Go back to store</Link>
-    </SuccessContainer>
+        <h1>Order succesfully placed!</h1>
+
+        <p>
+          Yay <strong>{customerName}</strong>, your order of{" "}
+          {productsImages.length} awesome shirts is on the way to your home.
+        </p>
+
+        <Link href="/">Go back to store</Link>
+      </SuccessContainer>
+    </>
   )
 }
 
