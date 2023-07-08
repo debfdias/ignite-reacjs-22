@@ -6,16 +6,17 @@ import Image from "next/image"
 
 import "keen-slider/keen-slider.min.css"
 
+import { AddProduct } from "@/components/addProduct"
+import { IProduct } from "@/contexts/CartContext"
+import { useCart } from "@/hooks/userCart"
+import Link from "next/link"
+import { MouseEvent } from "react"
 import Stripe from "stripe"
 
 interface HomeProps {
-  products: {
-    id: string
-    name: string
-    imageUrl: string
-    price: number
-  }[]
+  products: IProduct[]
 }
+
 const WheelControls: KeenSliderPlugin = (slider) => {
   let touchTimeout: ReturnType<typeof setTimeout>
   let position: {
@@ -86,17 +87,38 @@ export default function Home({ products }: HomeProps) {
     },
     [WheelControls]
   )
+
+  const { addToCart, checkIfItemAlreadyExists } = useCart()
+
+  function handleAddToCart(
+    e: MouseEvent<HTMLButtonElement>,
+    product: IProduct
+  ) {
+    e.preventDefault()
+    addToCart(product)
+  }
+
   return (
     <HomeContainer ref={sliderRef} className="keen-slider">
       {products.map((product) => {
         return (
-          <Product key={product.id} className="keen-slider__slide">
-            <Image src={product.imageUrl} width={520} height={520} alt="" />
-            <footer>
-              <strong>{product.name}</strong>
-              <span>{product.price}</span>
-            </footer>
-          </Product>
+          <Link key={product.id} href={`/product/${product.id}`}>
+            <Product className="keen-slider__slide">
+              <Image src={product.imageUrl} width={520} height={520} alt="" />
+              <footer>
+                <div>
+                  <strong>{product.name}</strong>
+                  <span>{product.price}</span>
+                </div>
+                <AddProduct
+                  size="large"
+                  color="green"
+                  disabled={checkIfItemAlreadyExists(product.id)}
+                  onClick={(e) => handleAddToCart(e, product)}
+                />
+              </footer>
+            </Product>
+          </Link>
         )
       })}
     </HomeContainer>
@@ -108,6 +130,7 @@ export const getServerSideProps: GetStaticProps = async () => {
     expand: ["data.default_price"]
   })
   const products = response.data.map((product) => {
+    const price = product.default_price as Stripe.Price
     return {
       id: product.id,
       name: product.name,
@@ -115,7 +138,9 @@ export const getServerSideProps: GetStaticProps = async () => {
       price: new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD"
-      }).format((product.default_price as Stripe.Price).unit_amount! / 100)
+      }).format(price.unit_amount! / 100),
+      defaultPriceId: price.id,
+      numberPrice: price.unit_amount! / 100
     }
   })
   return {
