@@ -20,4 +20,8 @@ Collection of annotations, challenges and several content of Ignite's ReactJS 20
 - [Pomodoro Timer - Manage your time and tasks](https://github.com/debfdias/ignite-reactjs-22/tree/master/p02)
 - [Main challenge - Coffee delivery](https://github.com/debfdias/CoffeeDelivery)
 
+### Project 04
+
+- [Shop Store - Buy awesome t-shirts](https://github.com/debfdias/ignite-reactjs-22/tree/master/p04)
+
 
